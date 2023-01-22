@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    environment {
+        //once you sign up for Docker hub, use that user_id here
+        registry = "naveenkumar14/my-alpine"
+        BUILD_NUM_ENV = currentBuild.getNumber()
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
+    stages {
+        stage('Build image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry
+                }
+            }
+        }
+        stage('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push("${BUILD_NUM_ENV}")
+                    }
+                }
+            }
+        }
+    }
+}
