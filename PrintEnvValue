@@ -1,0 +1,3 @@
+docker run --entrypoint "/bin/sh" -it naveenkumar14/my-alpine
+env >> env.txt
+docker cp contID:/env.txt ~/Desktop/env.txt
